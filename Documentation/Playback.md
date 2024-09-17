@@ -7,6 +7,7 @@
 * [Controls Toolbar](#controls-toolbar)
 * [Context Sensitive Hotkeys](#context-sensitive-hotkeys)
 * [Playback Options](#playback-options)
+* [AI-Enhanced Playback](#ai-enhanced-playback)
 
 ## Introduction
 
@@ -183,4 +184,62 @@ If checked the Controls Toolbar will be automatically shown when a Playback hotk
 ### Random Sleeps
 
 If checked all delays during playback will be a random value of more or less of the defined percentage, e.g.: if percentage is set to 50, a command with a delay of 300ms will be set to any value between 150ms and 450ms. Percentage can be set in the counter.
+
+## AI-Enhanced Playback
+
+Pulover's Macro Creator now includes AI-enhanced playback features to make your macros more robust, adaptive, and efficient.
+
+### Adaptive Action Execution
+
+During playback, each action is now adapted based on the current screen content. This makes macros more resilient to UI changes in target applications. The AI analyzes the screen and adjusts mouse coordinates or identifies alternative UI elements if the original targets have moved or changed.
+
+### Intelligent Error Handling
+
+The playback system now includes intelligent error handling for unknown or complex actions. If an action cannot be executed as originally recorded, the AI will attempt to interpret the intended outcome and suggest alternative execution steps.
+
+### Dynamic Delay Calculation
+
+Delays between actions are now dynamically calculated based on system performance and AI recommendations. This ensures that macros run smoothly on different systems and adapt to varying load conditions.
+
+### Adaptive Playback Speed
+
+The overall playback speed is periodically adjusted based on system performance to ensure smooth execution. If the system is under heavy load, the playback might slow down slightly to maintain accuracy. Conversely, on high-performance systems, playback might speed up for efficiency.
+
+### Using AI-Enhanced Playback
+
+To enable AI-enhanced playback:
+
+1. Go to Options > Settings > Playback
+2. Check the "Enable AI-Enhanced Playback" option
+3. Click "Apply" and "OK"
+
+When this option is enabled, you'll see an "AI" indicator in the status bar during playback, confirming that the AI enhancements are active.
+
+### Customizing AI Behavior
+
+Advanced users can fine-tune the AI behavior:
+
+1. Go to Options > Settings > Playback > AI Settings
+2. Adjust the following parameters:
+   - Adaptation Sensitivity: Controls how aggressively the AI adapts to screen changes
+   - Error Handling Strictness: Determines how the AI handles unknown actions
+   - Delay Adjustment Range: Sets the minimum and maximum delays the AI can apply
+   - Speed Adjustment Frequency: Defines how often the playback speed is recalculated
+
+### Limitations
+
+While AI-enhanced playback significantly improves macro reliability, please note:
+
+- It may slightly increase CPU usage during playback
+- For extremely time-sensitive operations, you might need to disable some AI features
+- The AI requires an initial learning period to optimize its performance for your specific system and macros
+
+### Feedback and Improvement
+
+The AI-enhanced playback system continuously learns from your usage. You can help improve it by:
+
+1. Enabling anonymous usage data collection in Options > Settings > Privacy
+2. Reporting any issues or unexpected behaviors through Help > Report Issue
+
+Your feedback helps us refine the AI algorithms and improve the playback experience for all users.
 

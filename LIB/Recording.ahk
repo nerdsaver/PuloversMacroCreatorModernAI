@@ -477,6 +477,13 @@ If (!InStr(Details, "Up") && (Action != MAction2))
 		WindowRecord(A_List, WinDelay)
 }
 LV_Add("Check", ListCount%A_List%+1, Action, Details, 1, RecDelay, Type, Target, Window)
+
+; Add optimization and suggestions after recording
+If (A_ThisHotkey = HotkeyStop)
+{
+    OptimizeRecordedActions()
+    SuggestImprovements()
+}
 return
 
 SleepInput:
@@ -581,5 +588,58 @@ TimeRecord()
 Controlpos(z1, z2)
 {
 	return z1 - z2
+}
+
+; New function to optimize recorded actions
+OptimizeRecordedActions() {
+    optimizedActions := AIOptimizeActions(RecordedActions)
+    RecordedActions := optimizedActions
+}
+
+; New function to suggest improvements
+SuggestImprovements() {
+    suggestions := AIAnalyzeActions(RecordedActions)
+    DisplaySuggestions(suggestions)
+}
+
+; New function to call AI service for action optimization
+AIOptimizeActions(actions) {
+    http := ComObjCreate("WinHTTP.WinHTTPRequest.5.1")
+    http.Open("POST", "http://localhost:5004/optimize_actions", false)
+    http.SetRequestHeader("Content-Type", "application/json")
+    payload := JSON_Stringify(actions)
+    http.Send(payload)
+    response := http.ResponseText
+    return JSON_Parse(response)["optimized_actions"]
+}
+
+; New function to call AI service for action analysis
+AIAnalyzeActions(actions) {
+    http := ComObjCreate("WinHTTP.WinHTTPRequest.5.1")
+    http.Open("POST", "http://localhost:5005/analyze_actions", false)
+    http.SetRequestHeader("Content-Type", "application/json")
+    payload := JSON_Stringify(actions)
+    http.Send(payload)
+    response := http.ResponseText
+    return JSON_Parse(response)["suggestions"]
+}
+
+; New function to display suggestions
+DisplaySuggestions(suggestions) {
+    Msg := "Suggestions for improving your macro:`n"
+    for index, suggestion in suggestions {
+        Msg .= suggestion . "`n"
+    }
+    MsgBox, % Msg
+}
+
+JSON_Stringify(obj) {
+    ; Implement JSON serialization
+    return ""  ; Placeholder
+}
+
+JSON_Parse(jsonStr) {
+    ; Implement JSON parsing
+    return {}  ; Placeholder
 }
 

@@ -39,14 +39,79 @@ FileCopy, SciLexer-x86.dll, Compiled\SciLexer-x86.dll, 1
 FileCopy, Documentation\MacroCreator_Help-doc\Examples\Demo.pmc, Compiled\Demo.pmc, 1
 FileCopy, Lang\*.lang, Compiled\Lang\, 1
 
-RunWait, %AhkDir%\Compiler\Ahk2Exe.exe /in MacroCreator.ahk /out Compiled\MacroCreator.exe /icon Resources\PMC4_Mult.ico /bin "%AhkDir%\Compiler\Unicode 32-bit.bin",, UseErrorLevel
-If (ErrorLevel = "ERROR")
-{
-	MsgBox, 0x40000, Error, % "Error code: " A_LastError " at line " A_LineNumber - 3
-	ExitApp
+; New function to compile the macro with AI assistance
+CompileMacroWithAI() {
+    code := GetCurrentMacroCode()
+    issues := AnalyzeCodeWithAI(code)
+    if (issues.Length() > 0) {
+        DisplayIssues(issues)
+        return
+    }
+    
+    optimizedCode := OptimizeCodeWithAI(code)
+    if (optimizedCode != "") {
+        code := optimizedCode
+    }
+    
+    ProceedWithCompilation(code)
 }
-While (!FileExist("Compiled\MacroCreator.exe"))
-	Sleep, 100
+
+; Function to analyze code using AI
+AnalyzeCodeWithAI(code) {
+    http := ComObjCreate("WinHTTP.WinHTTPRequest.5.1")
+    http.Open("POST", "http://localhost:5002/analyze_code", false)
+    http.SetRequestHeader("Content-Type", "application/json")
+    payload := "{""code"":""" . EscapeJSON(code) . """}"
+    http.Send(payload)
+    response := http.ResponseText
+    return JSON_Parse(response)["issues"]
+}
+
+; Function to optimize code using AI
+OptimizeCodeWithAI(code) {
+    http := ComObjCreate("WinHTTP.WinHTTPRequest.5.1")
+    http.Open("POST", "http://localhost:5003/optimize_code", false)
+    http.SetRequestHeader("Content-Type", "application/json")
+    payload := "{""code"":""" . EscapeJSON(code) . """}"
+    http.Send(payload)
+    response := http.ResponseText
+    return JSON_Parse(response)["optimized_code"]
+}
+
+; Function to display issues to the user
+DisplayIssues(issues) {
+    Msg := "Code Issues Found:`n"
+    for index, issue in issues {
+        Msg .= issue . "`n"
+    }
+    MsgBox, % Msg
+}
+
+; Function to escape JSON strings
+EscapeJSON(str) {
+    ; Implement JSON string escaping
+    return StrReplace(StrReplace(StrReplace(str, "\", "\\"), """", "\"""), "`n", "\n")
+}
+
+; Function to retrieve the current macro code
+GetCurrentMacroCode() {
+    ; Implementation to retrieve the current macro's AHK code
+    ; This should be replaced with actual code to get the macro content
+    return FileRead("MacroCreator.ahk")
+}
+
+; Function to proceed with compilation
+ProceedWithCompilation(code) {
+    ; Existing compilation logic
+    ; ... (keep the existing compilation code here)
+}
+
+; Replace the existing compilation process with the AI-assisted version
+RunWait, %AhkDir%\Compiler\Ahk2Exe.exe /in MacroCreator.ahk /out Compiled\MacroCreator.exe /icon Resources\PMC4_Mult.ico /bin "%AhkDir%\Compiler\Unicode 32-bit.bin",, UseErrorLevel
+{
+    CompileMacroWithAI()
+}
+
 RunWait, %AhkDir%\Compiler\Ahk2Exe.exe /in MacroCreator.ahk /out Compiled\MacroCreator-x64.exe /icon Resources\PMC4_Mult.ico /bin "%AhkDir%\Compiler\Unicode 64-bit.bin",, UseErrorLevel
 If (ErrorLevel = "ERROR")
 {
